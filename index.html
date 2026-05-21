@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adobe Photoshop 인터페이스 진화 구조</title>
+  <style>
+    :root {
+      --bg: #f7f3ea;
+      --paper: #fffaf0;
+      --ink: #1f1f1f;
+      --muted: #746b5d;
+      --orange: #31a8ff;
+      --orange-dark: #1473e6;
+      --yellow: #b7dfff;
+      --cream: #e8f4ff;
+      --line: rgba(31,31,31,0.14);
+      --shadow: 0 20px 60px rgba(55, 37, 10, 0.12);
+      --radius: 26px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255, 209, 102, 0.45), transparent 28%),
+        radial-gradient(circle at 90% 20%, rgba(255, 159, 28, 0.22), transparent 26%),
+        linear-gradient(135deg, #fffaf0 0%, var(--bg) 50%, #f1eadb 100%);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 250, 240, 0.78);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #001e36;
+      color: var(--orange);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      box-shadow: inset 0 0 0 2px rgba(255, 159, 28, 0.7);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: 999px;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 159, 28, 0.14);
+      color: var(--orange-dark);
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 44px 22px 80px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: center;
+      min-height: 560px;
+    }
+
+    .hero-copy {
+      padding: 34px;
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, 0.78);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.7);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 159, 28, 0.16);
+      color: var(--orange-dark);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 6vw, 76px);
+      line-height: 0.98;
+      letter-spacing: -0.075em;
+    }
+
+    .hero-copy p {
+      max-width: 620px;
+      margin: 22px 0 0;
+      font-size: 18px;
+      color: var(--muted);
+      word-break: keep-all;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .button {
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 18px;
+      border-radius: 999px;
+      font-weight: 900;
+      background: var(--ink);
+      color: white;
+      box-shadow: 0 12px 28px rgba(31,31,31,0.18);
+    }
+
+    .button.secondary {
+      background: white;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .interface-card {
+      min-height: 420px;
+      border-radius: var(--radius);
+      background: #0b1d2f;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fake-window {
+      height: 100%;
+      border-radius: 20px;
+      background: #102840;
+      border: 1px solid rgba(255,255,255,0.12);
+      display: grid;
+      grid-template-rows: 48px 1fr;
+      overflow: hidden;
+    }
+
+    .fake-topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.16);
+    }
+
+    .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--orange); opacity: .85; }
+    .dot:nth-child(2) { background: var(--yellow); }
+    .dot:nth-child(3) { background: #ffefe0; }
+
+    .fake-ui {
+      display: grid;
+      grid-template-columns: 58px 1fr 150px;
+      gap: 12px;
+      padding: 14px;
+    }
+
+    .toolbar, .panel, .canvas {
+      border-radius: 16px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.09);
+    }
+
+    .toolbar {
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+      align-content: start;
+    }
+
+    .tool {
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.14);
+    }
+
+    .tool.active { background: var(--orange); }
+
+    .canvas {
+      display: grid;
+      place-items: center;
+      background: #fff8e8;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .canvas::before {
+      content: "";
+      width: 210px;
+      height: 210px;
+      border-radius: 42% 58% 50% 50%;
+      background: linear-gradient(135deg, var(--orange), var(--yellow));
+      position: absolute;
+      transform: rotate(-14deg);
+      box-shadow: 18px 20px 0 rgba(31,31,31,0.13);
+    }
+
+    .canvas span {
+      position: relative;
+      z-index: 2;
+      font-size: 70px;
+      font-weight: 950;
+      color: #001e36;
+      letter-spacing: -0.1em;
+    }
+
+    .panel {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .panel-line {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.16);
+    }
+
+    .panel-line.wide { width: 100%; }
+    .panel-line.short { width: 56%; }
+    .panel-line.mid { width: 78%; }
+
+    .section {
+      margin-top: 70px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.08;
+      letter-spacing: -0.055em;
+    }
+
+    .section-title p {
+      margin: 0;
+      max-width: 480px;
+      color: var(--muted);
+      word-break: keep-all;
+    }
+
+    .txs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .txs-card {
+      border-radius: 24px;
+      padding: 24px;
+      background: rgba(255, 250, 240, 0.86);
+      border: 1px solid rgba(31,31,31,0.08);
+      box-shadow: 0 14px 35px rgba(55,37,10,0.08);
+    }
+
+    .txs-letter {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      color: white;
+      font-size: 23px;
+      font-weight: 950;
+      margin-bottom: 16px;
+    }
+
+    .txs-card:nth-child(2) .txs-letter { background: var(--orange-dark); }
+    .txs-card:nth-child(3) .txs-letter { background: var(--orange); color: #001e36; }
+
+    .txs-card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      letter-spacing: -0.035em;
+    }
+
+    .txs-card p {
+      margin: 0;
+      color: var(--muted);
+      word-break: keep-all;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 24px;
+      top: 20px;
+      bottom: 20px;
+      width: 2px;
+      background: linear-gradient(var(--orange), rgba(255,159,28,0.05));
+    }
+
+    .stage {
+      position: relative;
+      padding-left: 66px;
+    }
+
+    .stage-number {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 50px;
+      height: 50px;
+      border-radius: 18px;
+      background: var(--orange);
+      color: #001e36;
+      font-weight: 950;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 25px rgba(255,159,28,0.25);
+    }
+
+    .stage-card {
+      border-radius: 26px;
+      background: rgba(255, 250, 240, 0.9);
+      border: 1px solid rgba(31,31,31,0.08);
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(55,37,10,0.08);
+    }
+
+    .stage-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+    }
+
+    .stage-head h3 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -0.04em;
+    }
+
+    .stage-head span {
+      color: var(--orange-dark);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    details.feature {
+      border-radius: 20px;
+      background: white;
+      border: 1px solid rgba(31,31,31,0.08);
+      overflow: hidden;
+    }
+
+    details.feature summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 18px;
+      font-weight: 950;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    details.feature summary::-webkit-details-marker { display: none; }
+
+    details.feature summary::after {
+      content: "+";
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: var(--cream);
+      color: var(--orange-dark);
+    }
+
+    details.feature[open] summary::after { content: "–"; }
+
+    .feature-body {
+      padding: 0 18px 18px;
+      color: var(--muted);
+    }
+
+    .feature-body dl {
+      margin: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .feature-body dt {
+      color: var(--ink);
+      font-weight: 900;
+      margin-bottom: 3px;
+    }
+
+    .feature-body dd {
+      margin: 0;
+      word-break: keep-all;
+    }
+
+    .insight {
+      border-radius: 30px;
+      padding: 34px;
+      background: #071525;
+      color: white;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 24px;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+
+    .insight h2 { color: white; }
+    .insight p { color: rgba(255,255,255,0.72); margin: 0; word-break: keep-all; }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      padding: 12px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-weight: 900;
+    }
+
+    footer {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 22px 60px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .hero, .insight {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .txs-grid, .feature-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-title {
+        display: block;
+      }
+      .section-title p { margin-top: 10px; }
+      .nav-links { display: none; }
+      .fake-ui { grid-template-columns: 48px 1fr; }
+      .panel { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <div class="brand">
+        <div class="brand-mark">Ps</div>
+        <span>Photoshop UI Evolution</span>
+      </div>
+      <div class="nav-links">
+        <a href="#ps">P→S</a>
+        <a href="#stages">구조</a>
+        <a href="#insight">핵심</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">Adobe Photoshop Interface History</div>
+        <h1>포토샵 UI는<br />편집 방식의 역사다</h1>
+        <p>
+          Adobe Illustrator의 UI는 단순히 버튼이 늘어난 결과가 아니다.
+          디자인 작업이 복잡해질수록 도구 찾기, 객체 관리, 수정, 출력, 학습 부담을 줄이기 위해
+          인터페이스가 기능별로 세분화된 과정이다.
+        </p>
+        <div class="cta-row">
+          <a class="button" href="#stages">구조 보기</a>
+          <a class="button secondary" href="#ps">P→S 먼저 보기</a>
+        </div>
+      </div>
+
+      <div class="interface-card" aria-label="Illustrator interface illustration">
+        <div class="fake-window">
+          <div class="fake-topbar">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <div class="fake-ui">
+            <div class="toolbar">
+              <div class="tool active"></div>
+              <div class="tool"></div>
+              <div class="tool"></div>
+              <div class="tool"></div>
+              <div class="tool"></div>
+              <div class="tool"></div>
+            </div>
+            <div class="canvas"><span>Ps</span></div>
+            <div class="panel">
+              <div class="panel-line wide"></div>
+              <div class="panel-line short"></div>
+              <div class="panel-line mid"></div>
+              <div class="panel-line wide"></div>
+              <div class="panel-line short"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ps">
+      <div class="section-title">
+        <h2>Problem → Solution</h2>
+        <p>인터페이스 진화를 문제 → 해결 흐름으로 재정리한 구조.</p>
+      </div>
+
+      <div class="txs-grid">
+        <article class="txs-card">
+          <div class="txs-letter">P</div><h3>Problem</h3>
+          <p>
+            디자인 작업이 복잡해지면서 도구 찾기, 객체 관리, 수정, 반복 출력,
+            학습 부담이 커졌다.
+          </p>
+        </article>
+        <article class="txs-card">
+          <div class="txs-letter">S</div><h3>Solution</h3>
+          <p>
+            초기의 메뉴 + 툴바 + 캔버스 구조만으로는 수백 개 객체, 여러 효과,
+            반복 수정, 다양한 출력 형식을 감당하기 어려웠다.
+          </p>
+        </article>
+        <article class="txs-card">
+          <div class="txs-letter">I</div><h3>Interface Change</h3>
+          <p>
+            인터페이스가 기능별로 세분화되며 도구 접근, 정보 구조, 수정 구조,
+            생산성, 예측, 생성 단계로 확장되었다.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="stages">
+      <div class="section-title">
+        <h2>Photoshop 인터페이스 세분화 구조</h2>
+        <p>픽셀 편집에서 비파괴 편집, 자동화, 생성형 AI까지 단계별로 정리.</p>
+      </div>
+
+      <div class="timeline">
+
+        <section class="stage"><div class="stage-number">1</div><div class="stage-card"><div class="stage-head"><h3>도구 접근 해결</h3><span>Tool Access</span></div><div class="feature-grid">
+          <details class="feature" open><summary>Menu Bar</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>파일, 편집, 이미지, 레이어, 선택, 필터 등 전체 명령을 분류한다.</dd></div><div><dt>해결 문제</dt><dd>사진 보정, 합성, 출력 명령이 많아지면서 기능을 어디에서 찾아야 하는지 어려워진 문제.</dd></div><div><dt>의미</dt><dd>복잡한 이미지 편집 명령을 상위 카테고리로 정리한 디지털 작업실의 ‘서랍’ 역할을 한다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Tool Bar</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>Move, Marquee, Lasso, Brush, Clone Stamp, Eraser, Gradient, Type 등 자주 쓰는 행동을 노출한다.</dd></div><div><dt>해결 문제</dt><dd>선택, 칠하기, 지우기, 복제, 텍스트 입력처럼 반복되는 행동을 매번 메뉴에서 찾아야 했던 비효율.</dd></div><div><dt>의미</dt><dd>아날로그 암실과 화구의 도구들을 화면 왼쪽에 고정해 빠르게 전환할 수 있게 만든다.</dd></div></dl></div></details>
+        </div></div></section>
+
+        <section class="stage"><div class="stage-number">2</div><div class="stage-card"><div class="stage-head"><h3>선택 구조 해결</h3><span>Selection Structure</span></div><div class="feature-grid">
+          <details class="feature" open><summary>Marquee / Lasso / Magic Wand</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>사각형, 자유형, 색상 유사 영역 등 편집할 부분을 선택한다.</dd></div><div><dt>해결 문제</dt><dd>이미지 전체가 아니라 특정 영역만 보정하거나 잘라내고 싶은 문제.</dd></div><div><dt>의미</dt><dd>Photoshop의 기본 사고방식을 ‘전체 이미지 편집’에서 ‘부분 선택 후 편집’으로 바꾼다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Quick Selection / Object Selection</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>브러시처럼 칠하거나 객체를 감지해 복잡한 영역을 빠르게 선택한다.</dd></div><div><dt>해결 문제</dt><dd>머리카락, 인물, 제품처럼 경계가 복잡한 대상을 수동으로 따야 했던 문제.</dd></div><div><dt>의미</dt><dd>선택 작업이 손기술 중심에서 인식 보조 중심으로 이동한다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Select and Mask</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>선택 영역의 가장자리, 페더, 대비, 머리카락 디테일을 정교하게 조정한다.</dd></div><div><dt>해결 문제</dt><dd>선택은 했지만 가장자리가 어색해 합성 품질이 떨어지는 문제.</dd></div><div><dt>의미</dt><dd>선택을 단순한 경계선이 아니라 합성 품질을 결정하는 독립 편집 단계로 만든다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Pen Tool / Paths</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>베지어 곡선으로 정밀한 경로를 만들고 선택 영역이나 마스크로 변환한다.</dd></div><div><dt>해결 문제</dt><dd>제품, 로고, 인물 외곽처럼 픽셀 선택만으로는 정확한 경계를 만들기 어려운 문제.</dd></div><div><dt>의미</dt><dd>Photoshop 안에서도 벡터적 정밀함을 통해 이미지 편집 정확도를 높인다.</dd></div></dl></div></details>
+        </div></div></section>
+
+        <section class="stage"><div class="stage-number">3</div><div class="stage-card"><div class="stage-head"><h3>레이어·합성 구조 해결</h3><span>Layer & Composite</span></div><div class="feature-grid">
+          <details class="feature" open><summary>Layers Panel</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>이미지, 텍스트, 도형, 보정, 효과를 층으로 나누어 쌓고 숨기기, 잠금, 순서 변경을 한다.</dd></div><div><dt>해결 문제</dt><dd>한 장의 이미지 위에 직접 수정하면 되돌리기 어렵고 요소별 관리가 불가능했던 문제.</dd></div><div><dt>의미</dt><dd>Photoshop을 단순 사진 보정 툴에서 합성·디자인 제작 툴로 확장한 핵심 구조다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Layer Masks</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>레이어를 지우지 않고 흰색/검은색 마스크로 보이는 부분과 숨길 부분을 제어한다.</dd></div><div><dt>해결 문제</dt><dd>이미지를 지우개로 삭제하면 나중에 복구하기 어려운 문제.</dd></div><div><dt>의미</dt><dd>삭제 대신 숨김을 사용해 비파괴 편집의 핵심 원리를 만든다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Blending Modes</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>Multiply, Screen, Overlay 등 레이어가 아래 이미지와 섞이는 방식을 제어한다.</dd></div><div><dt>해결 문제</dt><dd>빛, 그림자, 질감, 색감을 자연스럽게 합성하기 어려운 문제.</dd></div><div><dt>의미</dt><dd>이미지를 단순히 겹치는 방식에서 수학적 혼합 방식으로 확장한다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Layer Styles</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>Drop Shadow, Stroke, Glow, Bevel 같은 효과를 레이어에 적용하고 다시 수정한다.</dd></div><div><dt>해결 문제</dt><dd>그림자나 외곽선을 픽셀로 직접 만들면 수정하기 어려운 문제.</dd></div><div><dt>의미</dt><dd>효과를 결과 픽셀이 아니라 수정 가능한 속성으로 저장한다.</dd></div></dl></div></details>
+        </div></div></section>
+
+        <section class="stage"><div class="stage-number">4</div><div class="stage-card"><div class="stage-head"><h3>보정·비파괴 편집 해결</h3><span>Non-destructive Editing</span></div><div class="feature-grid">
+          <details class="feature" open><summary>Adjustments Panel</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>Brightness/Contrast, Levels, Curves, Hue/Saturation 등 색과 명암을 조정한다.</dd></div><div><dt>해결 문제</dt><dd>이미지를 직접 보정하면 원본 픽셀이 바뀌어 재수정이 어려운 문제.</dd></div><div><dt>의미</dt><dd>보정을 이미지에 직접 칠하는 것이 아니라 조정 가능한 레이어로 분리한다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Smart Objects</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>이미지 원본 정보를 보존한 채 크기 변경, 필터, 변형을 적용한다.</dd></div><div><dt>해결 문제</dt><dd>이미지를 여러 번 줄이고 키우면 품질이 손상되는 문제.</dd></div><div><dt>의미</dt><dd>픽셀을 즉시 확정하지 않고 원본을 담은 컨테이너처럼 다루게 한다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Smart Filters</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>Blur, Sharpen, Noise 같은 필터를 나중에 다시 수정하거나 끌 수 있게 적용한다.</dd></div><div><dt>해결 문제</dt><dd>필터를 적용하면 결과가 픽셀에 고정되어 되돌리기 어려운 문제.</dd></div><div><dt>의미</dt><dd>필터를 파괴적 효과에서 편집 가능한 레이어 속성으로 바꾼다.</dd></div></dl></div></details>
+          <details class="feature"><summary>History Panel</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>작업 단계를 기록하고 이전 상태로 돌아가거나 일부 상태를 비교한다.</dd></div><div><dt>해결 문제</dt><dd>복잡한 보정 과정에서 어느 순간부터 잘못됐는지 추적하기 어려운 문제.</dd></div><div><dt>의미</dt><dd>편집 과정을 시간 순서로 외부화해 실험을 가능하게 한다.</dd></div></dl></div></details>
+        </div></div></section>
+
+        <section class="stage"><div class="stage-number">5</div><div class="stage-card"><div class="stage-head"><h3>생산성·워크플로우 해결</h3><span>Productivity</span></div><div class="feature-grid">
+          <details class="feature"><summary>Properties Panel</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>현재 선택한 레이어, 마스크, 텍스트, 도형에 맞는 설정을 자동으로 보여준다.</dd></div><div><dt>해결 문제</dt><dd>사용자가 여러 패널을 직접 찾아다녀야 하는 문제.</dd></div><div><dt>의미</dt><dd>기능 중심 UI에서 선택한 대상 중심 UI로 이동한다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Actions Panel</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>반복 작업을 기록하고 버튼 한 번으로 재실행한다.</dd></div><div><dt>해결 문제</dt><dd>이미지 여러 장에 같은 보정, 크기 조절, 저장 과정을 반복해야 하는 문제.</dd></div><div><dt>의미</dt><dd>수작업 편집을 자동화된 작업 흐름으로 바꾼다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Export As / Save for Web</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>JPG, PNG, GIF, WebP 등 용도에 맞게 크기와 품질을 조절해 출력한다.</dd></div><div><dt>해결 문제</dt><dd>인쇄용 이미지와 웹·앱용 이미지를 같은 방식으로 저장하기 어려운 문제.</dd></div><div><dt>의미</dt><dd>Photoshop을 인쇄 이미지 편집에서 디지털 콘텐츠 제작까지 확장한다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Libraries / Presets</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>브러시, 색상, 스타일, 그래픽 자산을 저장하고 재사용한다.</dd></div><div><dt>해결 문제</dt><dd>작업마다 같은 자산과 설정을 다시 만들어야 하는 문제.</dd></div><div><dt>의미</dt><dd>개별 파일 편집에서 반복 가능한 디자인 시스템 작업으로 확장한다.</dd></div></dl></div></details>
+        </div></div></section>
+
+        <section class="stage"><div class="stage-number">6</div><div class="stage-card"><div class="stage-head"><h3>생성·AI 인터페이스 해결</h3><span>Generative UI</span></div><div class="feature-grid">
+          <details class="feature" open><summary>Content-Aware Fill</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>선택한 영역을 주변 픽셀 정보를 바탕으로 자연스럽게 채운다.</dd></div><div><dt>해결 문제</dt><dd>불필요한 물체 제거 후 빈 공간을 수동으로 복원해야 하는 문제.</dd></div><div><dt>의미</dt><dd>픽셀 복원을 사람이 직접 그리는 작업에서 시스템이 추론하는 작업으로 바꾼다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Neural Filters</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>AI 기반으로 피부, 표정, 색상화, 스타일 등 복잡한 효과를 조정한다.</dd></div><div><dt>해결 문제</dt><dd>전문 보정 기술이 필요했던 작업을 짧은 조작으로 시도하기 어려웠던 문제.</dd></div><div><dt>의미</dt><dd>세밀한 수작업 보정 일부가 파라미터 조정과 AI 보조로 이동한다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Generative Fill / Expand</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>프롬프트나 선택 영역을 기반으로 이미지를 추가·확장·제거한다.</dd></div><div><dt>해결 문제</dt><dd>배경 확장, 요소 추가, 합성 시안을 전부 수동 제작해야 하는 시간 부담.</dd></div><div><dt>의미</dt><dd>직접 편집 중심에서 의도 입력 후 결과를 선택·수정하는 방식으로 이동한다.</dd></div></dl></div></details>
+          <details class="feature"><summary>Contextual Task Bar</summary><div class="feature-body"><dl><div><dt>역할</dt><dd>선택 상태에 따라 Generative Fill, Select Subject, Remove Background 등 다음 작업을 가까이에 제안한다.</dd></div><div><dt>해결 문제</dt><dd>기능이 너무 많아 사용자가 필요한 명령을 찾기 어려운 문제.</dd></div><div><dt>의미</dt><dd>사용자가 메뉴를 찾는 UI에서 시스템이 다음 행동을 제안하는 UI로 변화한다.</dd></div></dl></div></details>
+        </div></div></section>
+
+      </div>
+    </section>
+
+    <section class="section" id="insight">
+      <div class="insight">
+        <div>
+          <div class="eyebrow">Core Insight</div>
+          <h2>Illustrator UI의 핵심 변화</h2>
+        </div>
+        <div>
+          <p>
+            Illustrator의 인터페이스는 “더 잘 그리기”보다 “나중에 다시 고칠 수 있는 상태를 보존하기” 위해 발전했다.
+            그래서 메뉴, 툴바, 레이어, Appearance, Properties, Export, AI는 모두 인간의 기억·수정·관리 부담을 줄이는 방향으로 연결된다.
+          </p>
+          <div class="flow" style="margin-top: 22px;">
+            <span class="pill">기능 기억</span>
+            <span class="pill">객체 선택</span>
+            <span class="pill">의도 전달</span>
+            <span class="pill">결과 생성</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Based on the Adobe Photoshop interface evolution structure.
+  </footer>
+</body>
+</html>
